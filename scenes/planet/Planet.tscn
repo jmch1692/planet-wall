@@ -1,0 +1,31 @@
+[gd_scene load_steps=7 format=3 uid="uid://dltxxsif1qqhh"]
+
+[ext_resource type="Script" path="res://scenes/planet/Planet.gd" id="1_yipmg"]
+[ext_resource type="Texture2D" uid="uid://dyf43jb4gef5l" path="res://icon.svg" id="2_mbn5u"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_qw7ne"]
+radius = 48.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kf5yo"]
+albedo_texture = ExtResource("2_mbn5u")
+
+[sub_resource type="SphereMesh" id="SphereMesh_a5ha5"]
+radius = 48.0
+height = 96.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_wj8go"]
+
+[node name="Planet" type="RigidBody3D"]
+mass = 1000.0
+script = ExtResource("1_yipmg")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_qw7ne")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_kf5yo")
+mesh = SubResource("SphereMesh_a5ha5")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MeshInstance3D"]
+transform = Transform3D(50.4227, 0, 0, 0, 5.61825, 0, 0, 0, 6.5448, 0, 0, 46.6552)
+mesh = SubResource("BoxMesh_wj8go")
