@@ -1,31 +1,54 @@
-[gd_scene load_steps=7 format=3 uid="uid://dltxxsif1qqhh"]
+[gd_scene load_steps=8 format=3 uid="uid://dltxxsif1qqhh"]
 
 [ext_resource type="Script" path="res://scenes/planet/Planet.gd" id="1_yipmg"]
-[ext_resource type="Texture2D" uid="uid://dyf43jb4gef5l" path="res://icon.svg" id="2_mbn5u"]
+[ext_resource type="Texture2D" uid="uid://bc4qvwfdgvyri" path="res://assets/Skin_05_glossiness.jpg" id="2_e602s"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_btqyc"]
+size = Vector3(64, 1.05, 96)
+
+[sub_resource type="BoxMesh" id="BoxMesh_2pyq5"]
+size = Vector3(64, 1, 96)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_qw7ne"]
 radius = 48.0
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_kf5yo"]
-albedo_texture = ExtResource("2_mbn5u")
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_01ih7"]
+albedo_texture = ExtResource("2_e602s")
+emission_energy_multiplier = 1.98
+normal_scale = 16.0
+rim = 0.0
+anisotropy = -0.94
+refraction_scale = 1.0
+grow_amount = 7.25
 
 [sub_resource type="SphereMesh" id="SphereMesh_a5ha5"]
 radius = 48.0
 height = 96.0
 
-[sub_resource type="BoxMesh" id="BoxMesh_wj8go"]
-
 [node name="Planet" type="RigidBody3D"]
+collision_mask = 2
 mass = 1000.0
 script = ExtResource("1_yipmg")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+[node name="Wall" type="RigidBody3D" parent="."]
+collision_mask = 2
+freeze = true
+freeze_mode = 1
+max_contacts_reported = 1
+contact_monitor = true
+
+[node name="WallCollisionShape" type="CollisionShape3D" parent="Wall"]
+shape = SubResource("BoxShape3D_btqyc")
+
+[node name="WallMesh" type="MeshInstance3D" parent="Wall"]
+mesh = SubResource("BoxMesh_2pyq5")
+skeleton = NodePath("../../PlanetMesh")
+
+[node name="PlanetCollisionShape" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_qw7ne")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-material_override = SubResource("StandardMaterial3D_kf5yo")
+[node name="PlanetMesh" type="MeshInstance3D" parent="."]
+material_override = SubResource("StandardMaterial3D_01ih7")
 mesh = SubResource("SphereMesh_a5ha5")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="MeshInstance3D"]
-transform = Transform3D(50.4227, 0, 0, 0, 5.61825, 0, 0, 0, 6.5448, 0, 0, 46.6552)
-mesh = SubResource("BoxMesh_wj8go")
+[connection signal="body_entered" from="Wall" to="." method="_on_wall_body_entered"]

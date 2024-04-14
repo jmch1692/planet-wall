@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://6k0pat71moif"]
+[gd_scene load_steps=8 format=3 uid="uid://6k0pat71moif"]
 
 [ext_resource type="PackedScene" uid="uid://cug0t31e1ekgt" path="res://scenes/player/Player.tscn" id="1_cyvwo"]
+[ext_resource type="Script" path="res://scenes/level/LevelManager.gd" id="1_dkqhp"]
 [ext_resource type="PackedScene" uid="uid://dltxxsif1qqhh" path="res://scenes/planet/Planet.tscn" id="2_o517s"]
 [ext_resource type="Shader" path="res://scenes/level/sky.gdshader" id="3_a8sph"]
 
@@ -32,12 +33,28 @@ background_mode = 2
 sky = SubResource("Sky_6snw6")
 
 [node name="Level" type="Node3D"]
+script = ExtResource("1_dkqhp")
+
+[node name="HUD" type="Control" parent="."]
+layout_mode = 3
+anchor_right = 0.147
+anchor_bottom = 0.085
+offset_right = -0.343994
+offset_bottom = 54.92
+
+[node name="PlanetRotationLabel" type="Label" parent="HUD"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "Planet Rotation:"
 
 [node name="Player" parent="." instance=ExtResource("1_cyvwo")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6, 0)
 
 [node name="Planet" parent="." instance=ExtResource("2_o517s")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -47.4011, 0)
+rotation_speed = -0.5
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -0.268046, 0.963406, 0, -0.963406, -0.268046, -74.5401, 6.56792, -457.049)

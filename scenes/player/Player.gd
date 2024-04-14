@@ -2,9 +2,9 @@ extends CharacterBody3D
 
 const SPEED = 7.5
 const ACCELERATION = 5.0
-const JUMP_VELOCITY = 5.0
+const JUMP_VELOCITY = 10.0
 
-var gravity = 17.5
+var gravity = 22.5
 var movement_dir = Vector3.ZERO
 
 @onready var animation_player : AnimationPlayer = %Rogue_Hooded.get_node("AnimationPlayer")
