@@ -19,6 +19,10 @@ config/icon="res://icon.svg"
 
 SignalBus="*res://autoload/SignalBus.gd"
 
+[debug]
+
+gdscript/warnings/untyped_declaration=1
+
 [filesystem]
 
 import/fbx/enabled=false
@@ -44,4 +48,8 @@ jump={
 [physics]
 
 3d/default_gravity=0.0
+3d/default_gravity_vector=Vector3(0, 0, 0)
+3d/default_linear_damp=0.0
+3d/default_angular_damp=0.0
+3d/sleep_threshold_linear=0.0
 2d/default_gravity=0.0
