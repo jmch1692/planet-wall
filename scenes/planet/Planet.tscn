@@ -1,44 +1,79 @@
-[gd_scene load_steps=7 format=3 uid="uid://dltxxsif1qqhh"]
+[gd_scene load_steps=10 format=3 uid="uid://dltxxsif1qqhh"]
 
 [ext_resource type="Script" path="res://scenes/planet/Planet.gd" id="1_yipmg"]
-[ext_resource type="Texture2D" uid="uid://bc4qvwfdgvyri" path="res://assets/Skin_05_glossiness.jpg" id="2_e602s"]
-[ext_resource type="PackedScene" uid="uid://d0s8itoteg8pr" path="res://scenes/planet/Wall.tscn" id="2_ofqy6"]
+[ext_resource type="Texture2D" uid="uid://dtxeucnjmpltq" path="res://assets/skin_03_basecolor.jpg" id="2_aoj3i"]
+[ext_resource type="PackedScene" uid="uid://bnx28nec5jbou" path="res://addons/KayKit-Space-Base-Bits-1.0-6dfbcac9927d06283752c4defd4882cfe0d29666/addons/kaykit_space_base_bits/Assets/gltf/rocks_A.gltf" id="3_3uhjh"]
+[ext_resource type="PackedScene" uid="uid://ch38uosf0qowy" path="res://addons/KayKit-Space-Base-Bits-1.0-6dfbcac9927d06283752c4defd4882cfe0d29666/addons/kaykit_space_base_bits/Assets/gltf/rocks_B.gltf" id="4_kjyru"]
+[ext_resource type="PackedScene" uid="uid://q8327fwp2csc" path="res://scenes/SpaceGarbage/Drill.tscn" id="5_8j416"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_qw7ne"]
 radius = 48.0
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_01ih7"]
-albedo_texture = ExtResource("2_e602s")
-emission_energy_multiplier = 1.98
-normal_scale = 16.0
-rim = 0.0
-anisotropy = -0.94
-refraction_scale = 1.0
-grow_amount = 7.25
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gco5w"]
+albedo_texture = ExtResource("2_aoj3i")
 
 [sub_resource type="SphereMesh" id="SphereMesh_a5ha5"]
 radius = 48.0
 height = 96.0
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_8epg6"]
+radius = 120.0
+
 [node name="Planet" type="RigidBody3D"]
-collision_mask = 2
+collision_layer = 2
+collision_mask = 5
+axis_lock_linear_x = true
+axis_lock_linear_y = true
+axis_lock_linear_z = true
+axis_lock_angular_x = true
 axis_lock_angular_y = true
 axis_lock_angular_z = true
-mass = 1000.0
+mass = 10000.0
 gravity_scale = 0.0
+max_contacts_reported = 1
+contact_monitor = true
 script = ExtResource("1_yipmg")
-
-[node name="Wall" parent="." instance=ExtResource("2_ofqy6")]
-
-[node name="Wall_2" parent="." instance=ExtResource("2_ofqy6")]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
 
 [node name="PlanetCollisionShape" type="CollisionShape3D" parent="."]
 shape = SubResource("SphereShape3D_qw7ne")
 
 [node name="PlanetMesh" type="MeshInstance3D" parent="."]
-material_override = SubResource("StandardMaterial3D_01ih7")
+material_override = SubResource("StandardMaterial3D_gco5w")
 mesh = SubResource("SphereMesh_a5ha5")
 
-[connection signal="body_entered" from="Wall" to="." method="_on_wall_body_entered"]
-[connection signal="body_entered" from="Wall_2" to="." method="_on_wall_2_body_entered"]
+[node name="Area3D" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 5
+gravity_space_override = 2
+gravity_point = true
+gravity_point_center = Vector3(0, 0, 0)
+gravity_direction = Vector3(0, 0, 0)
+gravity = 25.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("SphereShape3D_8epg6")
+
+[node name="rocks_A2" parent="." instance=ExtResource("3_3uhjh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 48, 0)
+
+[node name="rocks_B2" parent="." instance=ExtResource("4_kjyru")]
+transform = Transform3D(0.927748, -0.372534, 0.0224272, 0.371927, 0.917917, -0.138195, 0.0308958, 0.136551, 0.990151, -8.5368, 46.7673, 5.57378)
+
+[node name="rocks_A3" parent="." instance=ExtResource("3_3uhjh")]
+transform = Transform3D(1, 0, 0, 0, 0.982742, -0.184981, 0, 0.184981, 0.982742, 13.6697, 44.6949, 10.8471)
+
+[node name="rocks_B3" parent="." instance=ExtResource("4_kjyru")]
+transform = Transform3D(0.954711, -0.169551, 0.2445, 0.297065, 0.496961, -0.815342, 0.0167346, 0.851047, 0.524822, -0.529642, 40.7576, 25.6775)
+
+[node name="Timer" type="Timer" parent="."]
+unique_name_in_owner = true
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.969257, 0.246052, 0, -0.246052, 0.969257, 0, 39.2278, 95.2493)
+
+[node name="Drill" parent="." instance=ExtResource("5_8j416")]
+transform = Transform3D(1, 0, 0, 0, 0.526303, 0.850297, 0, -0.850297, 0.526303, 0, 95.8528, -34.5122)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

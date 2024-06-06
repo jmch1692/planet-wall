@@ -18,10 +18,15 @@ config/icon="res://icon.svg"
 [autoload]
 
 SignalBus="*res://autoload/SignalBus.gd"
+AudioPlayer="*res://scenes/System/Audio/AudioPlayer.tscn"
 
 [debug]
 
 gdscript/warnings/untyped_declaration=1
+
+[editor]
+
+movie_writer/movie_file="C:/Users/jose_/Godot/Projects/planet-wall/movies/movie.avi"
 
 [filesystem]
 
@@ -45,11 +50,16 @@ jump={
 ]
 }
 
+[layer_names]
+
+3d_physics/layer_1="Player"
+3d_physics/layer_2="Planet"
+3d_physics/layer_3="WallsAndBlocks"
+
 [physics]
 
 3d/default_gravity=0.0
 3d/default_gravity_vector=Vector3(0, 0, 0)
-3d/default_linear_damp=0.0
-3d/default_angular_damp=0.0
 3d/sleep_threshold_linear=0.0
 2d/default_gravity=0.0
+2d/default_gravity_vector=Vector2(0, 0)

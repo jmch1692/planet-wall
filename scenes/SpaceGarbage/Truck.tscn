@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://buego8cajmf82"]
+
+[ext_resource type="Script" path="res://scenes/SpaceGarbage/Truck.gd" id="1_t7hnm"]
+[ext_resource type="PackedScene" uid="uid://omwq0v1phs0n" path="res://addons/KayKit-Space-Base-Bits-1.0-6dfbcac9927d06283752c4defd4882cfe0d29666/addons/kaykit_space_base_bits/Assets/gltf/spacetruck.gltf" id="2_1lmgw"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ajos1"]
+size = Vector3(3, 2, 4)
+
+[node name="Truck" type="RigidBody3D" groups=["garbage"]]
+collision_layer = 4
+collision_mask = 7
+mass = 70.0
+max_contacts_reported = 1
+contact_monitor = true
+script = ExtResource("1_t7hnm")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0388747, 0.977584, -0.171468)
+shape = SubResource("BoxShape3D_ajos1")
+
+[node name="spacetruck2" parent="." instance=ExtResource("2_1lmgw")]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, 0, 0, 0)
+
+[node name="VisibleOnScreenNotifier3D" type="VisibleOnScreenNotifier3D" parent="."]
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="screen_entered" from="VisibleOnScreenNotifier3D" to="." method="_on_visible_on_screen_notifier_3d_screen_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier3D" to="." method="_on_visible_on_screen_notifier_3d_screen_exited"]

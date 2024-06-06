@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://cug0t31e1ekgt"]
+[gd_scene load_steps=5 format=3 uid="uid://cug0t31e1ekgt"]
 
 [ext_resource type="Script" path="res://scenes/player/Player.gd" id="1_5ujy0"]
 [ext_resource type="PackedScene" uid="uid://hicnq7e57i25" path="res://addons/kaykit_character_pack_adventures/Characters/gltf/Rogue_Hooded.glb" id="1_f3wk4"]
+[ext_resource type="Script" path="res://scenes/player/PlayerRayCast3D.gd" id="3_70pyu"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_yevsv"]
 height = 1.9
@@ -9,9 +10,13 @@ radius = 0.65
 
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 2
+collision_mask = 7
 input_ray_pickable = false
 platform_on_leave = 2
+platform_wall_layers = 6
 script = ExtResource("1_5ujy0")
+jump_velocity = 30.0
+gravity = 50.0
 
 [node name="Rogue_Hooded" parent="." instance=ExtResource("1_f3wk4")]
 unique_name_in_owner = true
@@ -23,7 +28,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.16384, 0, 0)
 bones/1/position = Vector3(0, 0.392064, 0)
 bones/1/rotation = Quaternion(-1.11123e-10, 0.0431578, 2.57241e-09, 0.999068)
 bones/2/rotation = Quaternion(-6.93889e-18, 7.10543e-15, 4.93038e-32, 1)
-bones/3/rotation = Quaternion(8.27181e-25, 3.72529e-09, -2.75506e-40, 1)
+bones/3/rotation = Quaternion(8.27181e-25, 3.72529e-09, 0, 1)
 bones/4/rotation = Quaternion(-0.559906, -0.0608803, -0.643974, 0.517779)
 bones/5/rotation = Quaternion(3.65498e-08, -4.88301e-08, -0.494719, 0.869053)
 bones/7/rotation = Quaternion(-0.321065, -0.325319, 0.145726, 0.87741)
@@ -59,20 +64,35 @@ bones/46/rotation = Quaternion(-0.758253, -1.52737e-07, 0.651961, -1.11759e-08)
 transform = Transform3D(9.17323e-08, 0.262865, 0.964832, 0.999999, -5.48367e-07, 4.74853e-07, 8.68286e-07, 0.964832, -0.262865, 0.507764, 0.636705, -0.0185365)
 visible = false
 
+[node name="Knife_Offhand" parent="Rogue_Hooded/Rig/Skeleton3D/Knife_Offhand" index="0"]
+visible = false
+
 [node name="1H_Crossbow" parent="Rogue_Hooded/Rig/Skeleton3D" index="1"]
 transform = Transform3D(0.988701, -0.149894, -4.17134e-07, -8.6882e-07, -1.08398e-06, -0.999999, 0.149894, 0.988702, -1.49706e-06, -0.489506, 0.745658, 0.096339)
+visible = false
+
+[node name="1H_Crossbow" parent="Rogue_Hooded/Rig/Skeleton3D/1H_Crossbow" index="0"]
 visible = false
 
 [node name="2H_Crossbow" parent="Rogue_Hooded/Rig/Skeleton3D" index="2"]
 transform = Transform3D(0.988701, -0.149894, -4.17134e-07, -8.6882e-07, -1.08398e-06, -0.999999, 0.149894, 0.988702, -1.49706e-06, -0.489506, 0.745658, 0.096339)
 visible = false
 
+[node name="2H_Crossbow" parent="Rogue_Hooded/Rig/Skeleton3D/2H_Crossbow" index="0"]
+visible = false
+
 [node name="Knife" parent="Rogue_Hooded/Rig/Skeleton3D" index="3"]
 transform = Transform3D(4.21314e-07, -0.149893, 0.988701, 0.999999, -9.35798e-07, -8.50581e-07, 1.34781e-06, 0.988702, 0.149894, -0.491058, 0.64103, 0.10658)
 visible = false
 
+[node name="Knife" parent="Rogue_Hooded/Rig/Skeleton3D/Knife" index="0"]
+visible = false
+
 [node name="Throwable" parent="Rogue_Hooded/Rig/Skeleton3D" index="4"]
 transform = Transform3D(4.37053e-07, -0.149894, 0.988701, 0.999999, -9.21064e-07, -8.64267e-07, 1.3353e-06, 0.988702, 0.149894, -0.518076, 0.64103, 0.28479)
+visible = false
+
+[node name="Throwable" parent="Rogue_Hooded/Rig/Skeleton3D/Throwable" index="0"]
 visible = false
 
 [node name="Rogue_Cape" parent="Rogue_Hooded/Rig/Skeleton3D" index="5"]
@@ -85,5 +105,19 @@ visible = false
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.06016, 0)
 shape = SubResource("CylinderShape3D_yevsv")
+
+[node name="PlayerRayCast3D" type="RayCast3D" parent="."]
+unique_name_in_owner = true
+exclude_parent = false
+target_position = Vector3(0, -5, 0)
+collision_mask = 4
+debug_shape_custom_color = Color(0.929412, 0, 0.980392, 1)
+debug_shape_thickness = 5
+script = ExtResource("3_70pyu")
+
+[node name="VisibleOnScreenNotifier3D" type="VisibleOnScreenNotifier3D" parent="."]
+aabb = AABB(-2, 0, -1, 4, 2.5, 2)
+
+[connection signal="screen_exited" from="VisibleOnScreenNotifier3D" to="." method="_on_visible_on_screen_notifier_3d_screen_exited"]
 
 [editable path="Rogue_Hooded"]

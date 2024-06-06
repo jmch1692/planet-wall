@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3 uid="uid://bg57t45336es"]
+
+[ext_resource type="Script" path="res://scenes/SpaceGarbage/WindTurbine.gd" id="1_p8pky"]
+[ext_resource type="PackedScene" uid="uid://btocp1h1ms1kh" path="res://addons/KayKit-Space-Base-Bits-1.0-6dfbcac9927d06283752c4defd4882cfe0d29666/addons/kaykit_space_base_bits/Assets/gltf/windturbine_low.gltf" id="2_p33aa"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_716r1"]
+height = 2.64745
+radius = 1.49158
+
+[node name="WindTurbine" type="RigidBody3D" groups=["garbage"]]
+collision_layer = 4
+collision_mask = 7
+mass = 15.0
+max_contacts_reported = 1
+contact_monitor = true
+script = ExtResource("1_p8pky")
+metadata/_edit_group_ = true
+
+[node name="VisibleOnScreenNotifier3D" type="VisibleOnScreenNotifier3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+aabb = AABB(-1, -2, -1, 2, 4, 2)
+
+[node name="windturbine_low2" parent="." instance=ExtResource("2_p33aa")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.29236, 0)
+shape = SubResource("CylinderShape3D_716r1")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="screen_entered" from="VisibleOnScreenNotifier3D" to="." method="_on_visible_on_screen_notifier_3d_screen_entered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier3D" to="." method="_on_visible_on_screen_notifier_3d_screen_exited"]

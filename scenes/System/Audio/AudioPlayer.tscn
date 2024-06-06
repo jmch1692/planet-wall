@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://cog4eep5u0wl8"]
+
+[ext_resource type="AudioStream" uid="uid://8a460pl6msfx" path="res://assets/Cosmic Leap.mp3" id="1_6t4i5"]
+
+[node name="AudioPlayer" type="AudioStreamPlayer"]
+stream = ExtResource("1_6t4i5")
+autoplay = true
